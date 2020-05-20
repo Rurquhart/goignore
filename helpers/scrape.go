@@ -3,29 +3,29 @@ package helpers
 import (
 	"io/ioutil"
 	"net/http"
+	"strings"
 )
 
 
 func UrlBuilder(tech string) string {
 	rawUrl := "https://raw.githubusercontent.com/github/gitignore/master/"
-	url := rawUrl + tech + ".gitignore"
+	url := rawUrl + strings.Title(tech) + ".gitignore"
 	return url
 }
 
-func getIgnore(tech string) (string, error) {
+func GetIgnore(tech string) ([]byte, error) {
 	url := UrlBuilder(tech)
 
-	resp, getErr := http.Get(url)
-	if getErr != nil {
-		return "", getErr
+	resp, err := http.Get(url)
+	if err != nil {
+		return []byte(""), err
 	}
 	defer resp.Body.Close()
 
-	bodyBytes, ioErr := ioutil.ReadAll(resp.Body)
-	if ioErr != nil {
-		return "", ioErr
+	body, err := ioutil.ReadAll(resp.Body)
+	if err != nil {
+		return []byte(""), err
 	}
-	body := string(bodyBytes)
 
 	return body, nil
 }
