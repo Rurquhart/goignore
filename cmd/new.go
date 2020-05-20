@@ -7,6 +7,7 @@ import (
 	"goignore/helpers"
 	"io/ioutil"
 	"log"
+	"strings"
 )
 
 type IgnoreFile struct {
@@ -42,13 +43,14 @@ func NewIgnoreFile(techs []string) *IgnoreFile {
 
 func (ign *IgnoreFile) GenerateContent() {
 	for _, tech := range ign.Techs {
+		tech = strings.Title(tech)
 		scrapedContent, err := helpers.GetIgnore(tech)
 		log.Print(string(scrapedContent))
 		if err != nil {
 			msg := fmt.Sprintf("Error getting ignore config for '$s'!\n %v", err)
 			exit(msg)
 		}
-		header := fmt.Sprintf("\n# Ignore rules for: %s", tech)
+		header := fmt.Sprintf("\n#----Ignore rules for: %s\n", tech)
 		ign.Content.Write([]byte(header))
 		ign.Content.Write(scrapedContent)
 	}

@@ -3,13 +3,12 @@ package helpers
 import (
 	"io/ioutil"
 	"net/http"
-	"strings"
 )
 
 
 func UrlBuilder(tech string) string {
 	rawUrl := "https://raw.githubusercontent.com/github/gitignore/master/"
-	url := rawUrl + strings.Title(tech) + ".gitignore"
+	url := rawUrl + tech + ".gitignore"
 	return url
 }
 
